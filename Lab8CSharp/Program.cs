@@ -7,8 +7,14 @@ class Program
 {
     static void Main()
     {
-        string inputFile = "input.txt";
-        string outputFile = "output.txt";
+        Exercise1();
+        Exercise2();
+    }
+
+    static void Exercise1()
+    {
+        string inputFile = "input1.txt";
+        string outputFile = "output_exercise1.txt";
 
         // Читаємо вміст вхідного файлу
         string[] lines = File.ReadAllLines(inputFile);
@@ -70,5 +76,35 @@ class Program
             return false;
 
         return true;
+    }
+
+    static void Exercise2()
+    {
+        string inputFile = "input2.txt";
+        string outputFile = "output_exercise2.txt";
+
+        // Читаємо вміст вхідного файлу
+        string[] lines = File.ReadAllLines(inputFile);
+
+        // Паттерни для визначення слів, які треба видалити та замінити
+        string deletePattern = @"\b\w*(re|nd|less)\b";
+        string replacePattern = @"\bto\w*\b";
+
+        // Змінна для зберігання відредагованого тексту
+        string editedText = "";
+
+        // Перебираємо рядки у файлі
+        foreach (string line in lines)
+        {
+            // Видаляємо слова з вказаними закінченнями та замінюємо слова з префіксом "to"
+            string result = Regex.Replace(line, deletePattern, "");
+            result = Regex.Replace(result, replacePattern, "at");
+
+            // Додаємо редагований рядок до загального тексту
+            editedText += result + Environment.NewLine;
+        }
+
+        // Записуємо результат у вихідний файл
+        File.WriteAllText(outputFile, editedText);
     }
 }
