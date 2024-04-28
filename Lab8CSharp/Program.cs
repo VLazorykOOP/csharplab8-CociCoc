@@ -10,6 +10,8 @@ class Program
         Exercise1();
         Exercise2();
         Exercise3();
+        Exercise4();
+        Exercise5();
     }
 
     static void Exercise1()
@@ -157,6 +159,77 @@ class Program
         // Записуємо результат у вихідний файл
         File.WriteAllText(outputFile, string.Join(" ", uniqueWords));
     }
+    static void Exercise4()
+    {
+        string inputFile = "input4.txt";
+        string outputFile = "output4.txt";
 
+        // Дана послідовність чисел
+        double[] numbers = { 2.5, 3.7, 1.8, 4.2, 5.1, 6.3, 7.9, 8.4 };
+
+        // Записуємо всі числа у файл
+        File.WriteAllLines(inputFile, numbers.Select(n => n.ToString()));
+
+        // Читаємо числа з файлу
+        string[] lines = File.ReadAllLines(inputFile);
+        double maxNumber = double.MinValue;
+
+        // Знаходимо максимальне значення серед чисел, які знаходяться на непарних позиціях
+        for (int i = 0; i < lines.Length; i++)
+        {
+            if (i % 2 != 0) // Перевірка на непарність
+            {
+                double number = double.Parse(lines[i]);
+                if (number > maxNumber)
+                {
+                    maxNumber = number;
+                }
+            }
+        }
+
+        // Записуємо максимальне значення у вихідний файл
+        File.WriteAllText(outputFile, maxNumber.ToString());
+    }
+    static void Exercise5()
+    {
+        string tempFolder = @"C:\temp";
+        string shkliarFolder = Path.Combine(tempFolder, "Shkliar1");
+        string komarFolder = Path.Combine(tempFolder, "Komar2");
+        string allFolder = Path.Combine(tempFolder, "ALL");
+
+        // Creating folders
+        Directory.CreateDirectory(shkliarFolder);
+        Directory.CreateDirectory(komarFolder);
+
+        // Writing text to files
+        string text1 = "<Shkliar Maksim Olehovych, 2003> year of birth, place of residence <city Storozhynets>";
+        string text2 = "<Komar Serhiy Fedorovych, 2000> year of birth, place of residence <city Kyiv>";
+        File.WriteAllText(Path.Combine(shkliarFolder, "t1.txt"), text1);
+        File.WriteAllText(Path.Combine(shkliarFolder, "t2.txt"), text2);
+
+        // Reading and writing from files
+        string t1Content = File.ReadAllText(Path.Combine(shkliarFolder, "t1.txt"));
+        string t2Content = File.ReadAllText(Path.Combine(shkliarFolder, "t2.txt"));
+        File.WriteAllText(Path.Combine(komarFolder, "t3.txt"), t1Content + Environment.NewLine + t2Content);
+
+        // Moving and copying files
+        File.Copy(Path.Combine(shkliarFolder, "t1.txt"), Path.Combine(komarFolder, "t1.txt"), true);
+        File.Move(Path.Combine(shkliarFolder, "t2.txt"), Path.Combine(komarFolder, "t2.txt"));
+
+        // Renaming folders
+        Directory.Move(komarFolder, allFolder);
+        Directory.Delete(shkliarFolder, true);
+
+        // Displaying information about files in the ALL folder
+        Console.WriteLine("Information about files in the ALL folder:");
+        foreach (string file in Directory.GetFiles(allFolder))
+        {
+            FileInfo fileInfo = new FileInfo(file);
+            Console.WriteLine($"File Name: {fileInfo.Name}");
+            Console.WriteLine($"Size: {fileInfo.Length} bytes");
+            Console.WriteLine($"Creation Date: {fileInfo.CreationTime}");
+            Console.WriteLine();
+        }
+    }
 
 }
