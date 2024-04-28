@@ -9,6 +9,7 @@ class Program
     {
         Exercise1();
         Exercise2();
+        Exercise3();
     }
 
     static void Exercise1()
@@ -107,4 +108,55 @@ class Program
         // Записуємо результат у вихідний файл
         File.WriteAllText(outputFile, editedText);
     }
+    static void Exercise3()
+    {
+        string inputFile1 = "input1_Exercise3.txt";
+        string inputFile2 = "input2_Exercise3.txt";
+        string outputFile = "output_exercise3.txt";
+
+        // Читаємо вміст перших та других файлів
+        string text1 = File.ReadAllText(inputFile1);
+        string text2 = File.ReadAllText(inputFile2);
+
+        Console.WriteLine("Text from inputFile1:");
+        Console.WriteLine(text1);
+        Console.WriteLine();
+
+        Console.WriteLine("Text from inputFile2:");
+        Console.WriteLine(text2);
+        Console.WriteLine();
+
+        // Розділяємо слова з перших та других текстів за всіма розділовими знаками
+        string[] words1 = Regex.Split(text1, @"\W+");
+        string[] words2 = Regex.Split(text2, @"\W+");
+
+        Console.WriteLine("Words from inputFile1:");
+        foreach (var word in words1)
+        {
+            Console.WriteLine(word);
+        }
+        Console.WriteLine();
+
+        Console.WriteLine("Words from inputFile2:");
+        foreach (var word in words2)
+        {
+            Console.WriteLine(word);
+        }
+        Console.WriteLine();
+
+        // Вибираємо слова з першого тексту, які не входять у другий текст
+        IEnumerable<string> uniqueWords = words1.Except(words2);
+
+        Console.WriteLine("Unique words from inputFile1:");
+        foreach (var word in uniqueWords)
+        {
+            Console.WriteLine(word);
+        }
+        Console.WriteLine();
+
+        // Записуємо результат у вихідний файл
+        File.WriteAllText(outputFile, string.Join(" ", uniqueWords));
+    }
+
+
 }
